@@ -7,12 +7,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Code') {
-            steps {
-                git branch: 'main', url: 'https://github.com/SamithISE/Docker.git'
-            }
-        }
-
         stage('Build Java App') {
             steps {
                 bat 'javac demo.java'
@@ -21,21 +15,19 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("${IMAGE_NAME}:latest")
-                }
+                bat "docker build -t %IMAGE_NAME%:v1 ."
             }
         }
 
-        stage('Login & Push to DockerHub') {
+        stage('Push to DockerHub') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerID',
                     usernameVariable: 'USER',
                     passwordVariable: 'PASS'
                 )]) {
-                   bat 'echo %PASS% | docker login -u %USER% --password-stdin'
-                    bat "docker push ${IMAGE_NAME}:v1"
+                    bat 'echo %PASS% | docker login -u %USER% --password-stdin'
+                    bat "docker push %IMAGE_NAME%:v1"
                 }
             }
         }
