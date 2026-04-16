@@ -15,7 +15,7 @@ pipeline {
 
         stage('Build Java App') {
             steps {
-                sh 'javac demo.java'
+                bat 'javac demo.java'
             }
         }
 
@@ -34,8 +34,8 @@ pipeline {
                     usernameVariable: 'USER',
                     passwordVariable: 'PASS'
                 )]) {
-                    sh 'echo $PASS | docker login -u $USER --password-stdin'
-                    sh "docker push ${IMAGE_NAME}:latest"
+                   bat 'echo %PASS% | docker login -u %USER% --password-stdin'
+                    bat "docker push ${IMAGE_NAME}:v1"
                 }
             }
         }
