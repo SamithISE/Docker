@@ -9,7 +9,7 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/SamithSE/Docker.git'
+                git 'https://github.com/SamithISE/Docker.git'
             }
         }
 
